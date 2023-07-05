@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    container_name: api-server
+    command: sh -c "npx knex migrate:latest && npm start"
+    ports:
+      - 4040:3333
+    volumes:
+      - .:/usr/src/app
+      - .:/usr/src//app/node_modules'
+    environment:
+      DATABASE_CLIENT: sqlite
+      DATABASE_URL: "./db/prod.sqlite"
