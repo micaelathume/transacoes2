@@ -1,0 +1,46 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+    
+    - name: Build-DB
+      run: docker-compose build
+      
+    - name: Install-dependences
+      run: npm install
+      
+    - name: Install-knex
+      run: npm install knex
+      
+    - name: Create-DB
+      run: npx knex migrate:latest
+      
+    - name: Test
+      run: go test -v .env.test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: go build -v .env
