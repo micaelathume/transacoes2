@@ -1,0 +1,9 @@
+node_modules
+dist
+
+# Database
+db/*.sqlite
+
+# Env variables
+.env*
+!*.env.*example
